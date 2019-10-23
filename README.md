@@ -9,31 +9,30 @@ Details on how-to setup AEM as a Service on Linux. Used CentOS 7 and Ubuntu 17.0
 
 ## Step-by-step guide
 1. You will need root access
-2. Create user aem and add to sudoers group
-   * `adduser aem`   
-   * `usermod -aG sudo aem`   
+2. Create user aem
+   * `sudo adduser --system --home /mnt/crx --disabled-login --group aem`   
    * Test the user 
-     * `su - aem`   
-     * `sudo ls -la /root` [This is accessible by root only]
+     * `sudo su - aem -s /bin/bash -c "ls -la"`
+     * `sudo su - aem -s /bin/bash -c "ls -la /root"` [This is accessible by root only]
 2. Create these 2 files (Get the contents of the files based on the OS. Under /centos or /ubutnu in this project)
    * aem
    * aem.service
 3. Open `aem` script file and update the below
-   * AEM_ROT (e.g: `/mnt/crx` is the root, where `/mnt/crx/crx-quickstart` is the full path)
+   * AEM_ROOT (e.g: `/mnt/crx` is the root, where `/mnt/crx/crx-quickstart` is the full path)
    * AEM_USER (e.g: `aem`) 
 4. SCP these files to the server
    * Copy `aem` to `/usr/bin/aem`
      * Example: From terminal on your desktop `$ scp <filename> user@1.1.1.1:/usr/bin/aem`
-   * Copy `aem.service` to `/etc/system.d/system/aem.system`
-     * Example: From terminal on your desktop `$ scp <filename> user@1.1.1.1:/etc/system.d/system/aem.system`
+   * Copy `aem.service` to `/etc/systemd/system/aem.service`
+     * Example: From terminal on your desktop `$ scp <filename> user@1.1.1.1:/etc/systemd/system/aem.service`
 5. SSH to your server
    * `ssh user@1.1.1.1`
 6. Give permissions to the files
    * `sudo chmod u+rwx /usr/bin/aem`
-   * `sudo chmod u+rwx /etc/system.d/system/aem.system`
+   * `sudo chmod u+rwx /etc/systemd/system/aem.service`
 7. Update 
-   * `cd /etc/system.d/system`
-   * `sudo systemctl enable aem.system`
+   * `cd /etc/systemd/system`
+   * `sudo systemctl enable aem.service`
 8. You can restart the server or run the below commands to start AEM. Make sure you run **Pre-requisite Step 2** before running this command.
 
 ## Commands to START, RESTART and STOP AEM
